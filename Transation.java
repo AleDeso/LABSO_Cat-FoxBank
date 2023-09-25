@@ -5,7 +5,7 @@ public class Transation {
     LocalDateTime date;
     double cashMoved = 0;
     String cashAccountKey;
-    DateTimeFormatter f = DateTimeFormatter.ofPattern("EEEE, dd/MM/yyyy 'ore:' HH:mm:ss");
+    DateTimeFormatter f = DateTimeFormatter.ofPattern("EE, dd/MM/yyyy 'ore:' HH:mm:ss");
     
 
     public Transation(){
@@ -29,11 +29,10 @@ public class Transation {
 
         String trans = null;
         if(cashAccountKey != null){
-            trans = "\tultima transazione di: " + cashAccountKey + // NOME LO TOLGO????????????????? 
-            "\tAmmonta a: "+ cashMoved + 
+            trans = "\tultima transazione: "+ cashMoved + 
             "\tAvvenuta: " + date.format(f);
         }else{
-            trans = "nessuna transazione eseguita! -- data transazione account: " + date.format(f);
+            trans = "\tnessuna transazione eseguita! -- data transazione account: " + date.format(f);
         }
 
         return trans;

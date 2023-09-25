@@ -11,11 +11,9 @@ import java.util.Map;
  */
 public class AccountManager {
     private HashMap<String, Account> serchAccount;
-    private HashMap<String, Transation> lastTransation;
 
     public AccountManager() {
         this.serchAccount = new HashMap<>(); // usa nome account come chiave e account come parametro
-        this.lastTransation = new HashMap<>();
     }
 
     /*
@@ -90,50 +88,4 @@ public class AccountManager {
         return listAccount;
     }
     
-
-
-
-
-
-
-
-    /*
-     * gestisco l'HASHMAP delle TRANSAZIONI
-     * 
-     */
-
-
-
-    public synchronized void add(String Tkey, Transation lastT) throws InterruptedException {
-        if (this.lastTransation.get(Tkey) == null) {
-             // Non esiste un TRANSAZIONE con la stessa chiave, quindi possiamo aggiungerla
-            this.lastTransation.put(Tkey,lastT);
-        }else{
-            // Esiste già una TRANSAZIONE con la stessa chiave
-            this.lastTransation.remove(Tkey);
-            this.lastTransation.put(Tkey,lastT);
-        } 
-        notifyAll();
-    }
-
-    /*  implemento l'estrazione dell'ultima transazione [nel momento che mi serve per il comando "LIST"]
-    *   quindi estraggo transazione data la chiave (ovvero il nome di un account univoco)
-    *    e poi chiamo su quell'oggetto che mi viene restituito dall'HashMap(ogg. tipo Transation)
-    *   il comando toString per leggere l'ultima transazione
-    */
-
-    /*
-        public synchronized Transation extractTransation(String Tkey) throws InterruptedException {
-        Transation last = this.lastTransation.get(Tkey);
-        if(last == null) {
-            // La Transazione con la chiave specificata non esiste
-            throw new IllegalArgumentException("Account " + Tkey + " non presenta transazioni");
-        }else
-
-        notifyAll();
-        return ;
-    }
-     */
-
-
 }
