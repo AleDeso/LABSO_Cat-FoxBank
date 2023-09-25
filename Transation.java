@@ -33,7 +33,7 @@ public class Transation {
             "\tAmmonta a: "+ cashMoved + 
             "\tAvvenuta: " + date.format(f);
         }else{
-            trans = "nessuna transazione eseguita! data transazione account: " + date.format(f);
+            trans = "nessuna transazione eseguita! -- data transazione account: " + date.format(f);
         }
 
         return trans;

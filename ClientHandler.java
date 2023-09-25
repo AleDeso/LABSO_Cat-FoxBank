@@ -130,7 +130,7 @@ public class ClientHandler implements Runnable {
             }
             R.lock();
             R.InFlow(M);
-            R.setTransation(M, aReceiver);
+            R.setTransation(+M, aReceiver);
   ////////////////////a.add(positiveT.getTKey(), positiveT);//Memorizzo in una HasMap
             R.unlock();
 
