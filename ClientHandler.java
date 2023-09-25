@@ -118,9 +118,14 @@ public class ClientHandler implements Runnable {
                 wait();
             }
             S.lock();
-            S.OutFlow(M);
-            S.setTransation(-M, aSender);
-   /////////////////a.add(negativeT.getTKey(), negativeT);//Memorizzo in una HasMap
+            if(S.getMoney()>M){
+                S.OutFlow(M);
+                S.setTransation(-M, aSender);
+            }else{
+                throw new Exception("transaction interrupt! -- saldo insufficiente :(");
+            }
+            
+/////////////////a.add(negativeT.getTKey(), negativeT);//Memorizzo in una HasMap
             S.unlock();
 
             // Incremento del conto ricevente
@@ -131,14 +136,15 @@ public class ClientHandler implements Runnable {
             R.lock();
             R.InFlow(M);
             R.setTransation(+M, aReceiver);
-  ////////////////////a.add(positiveT.getTKey(), positiveT);//Memorizzo in una HasMap
+////////////////////a.add(positiveT.getTKey(), positiveT);//Memorizzo in una HasMap
             R.unlock();
 
             message = "successful transation";
 
-        }catch (Exception e) {
+        }catch (Exception e) {   
                     
-             message = "transaction interrupt!";
+             message = " saldo insufficiente";
+             System.err.println(e);
         }
         return message;
     }
