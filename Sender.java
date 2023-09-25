@@ -18,7 +18,7 @@ public class Sender implements Runnable {
         try {
             PrintWriter to = new PrintWriter(this.s.getOutputStream(), true);
             while (true) {
-                String request = scan.nextLine();
+                String requestClient = scan.nextLine(); // LEGGE TERMINALE CLIENT   ***************************************
                 /*
                  * se il thread è stato interrotto mentre leggevamo l'input da tastiera, inviamo
                  * "quit" al server e usciamo
@@ -29,9 +29,10 @@ public class Sender implements Runnable {
                 }
                 /* in caso contrario proseguiamo e analizziamo l'input inserito */
                 
-                to.println(request); // MANDA LA RICHIESTA AL SERVER ??????????????????
+                to.println(requestClient); // MANDA LA RICHIESTA AL SERVER 
 
-                if (request.equals("quit")) {
+                if (requestClient.equals("quit")) {
+                    to.println("quitC");
                     break;
                 }
             }

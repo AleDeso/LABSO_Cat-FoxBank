@@ -29,9 +29,10 @@ public class Server {
             }
 
             try {
-                serverThread.interrupt();
+                serverThread.interrupt(); // va a uscire dal ciclo SocketListener
                 /* attendi la terminazione del thread */
                 serverThread.join();
+                
             } catch (InterruptedException e) {
                 /*
                  * se qualcuno interrompe questo thread nel frattempo, terminiamo

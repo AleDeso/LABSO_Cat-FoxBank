@@ -14,7 +14,7 @@ public class AccountManager {
     private HashMap<String, Transation> lastTransation;
 
     public AccountManager() {
-        this.serchAccount = new HashMap<>();
+        this.serchAccount = new HashMap<>(); // usa nome account come chiave e account come parametro
         this.lastTransation = new HashMap<>();
     }
 
@@ -62,8 +62,7 @@ public class AccountManager {
             String indice = entry.getKey();
             Account valueAccount = entry.getValue();
 
-            listAccount = listAccount + entry + "Codice: " + indice + 
-            "\n" + valueAccount;
+            listAccount = listAccount + "Codice: " + indice + " " +  valueAccount + "\n";
         }
         notifyAll();
         return listAccount; 
@@ -71,15 +70,16 @@ public class AccountManager {
     public synchronized String extractAll() throws InterruptedException {
         StringBuilder listAccountBuilder = new StringBuilder(); // Crea un oggetto StringBuilder
     
+        int c = 0;
         for (Map.Entry<String, Account> entry : serchAccount.entrySet()) {
- ////           String indice = entry.getKey();
+            //String indice = entry.getKey();
             Account valueAccount = entry.getValue();
-            int c = 0;
+///////////////////////7 Transation last = lastTransation.get(indice);
             c++;
             // Utilizza append() per aggiungere le informazioni dell'account al StringBuilder
-            listAccountBuilder.append(c).append("vai\t");
+            listAccountBuilder.append(c + ". ");
  ////           listAccountBuilder.append("Codice: ").append(indice).append("\t");
-            listAccountBuilder.append(valueAccount).append("\n ok");
+            listAccountBuilder.append(valueAccount).append("\n");
         }
     
         notifyAll();

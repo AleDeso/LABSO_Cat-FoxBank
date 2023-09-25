@@ -24,16 +24,17 @@ public class ClientHandler implements Runnable {
 
             System.out.println("Thread " + Thread.currentThread() + " listening...");
 
-            boolean closed = false;
-            while (!closed) {
-                String request = from.nextLine();
+            //boolean closed = false;
+            while (!Thread.interrupted()) {
+                String request = from.nextLine(); // LEGGE IL MESSAGGIO DEL SENDER (quindi il terminale del Client)**********************
                 String[] parts = request.split(" ", 4);
+                String p = parts[0].toLowerCase();
                 if (!Thread.interrupted()) {
                     System.out.println("Request: " + request);
                     try {
-                        switch (parts[0].toLowerCase()) {
+                        switch (p) {
                             case "quit":
-                                closed = true;
+                                //closed = true;
                                 to.println("quit");
                                 break;
 
@@ -98,9 +99,10 @@ public class ClientHandler implements Runnable {
                 }
             }
 
-            to.println("quit");
+            //to.println("quit");
+
             s.close();
-            System.out.println("Closed");
+            System.out.println("one Client is Closed");
         } catch (IOException e) {
             System.err.println("ClientHandler: IOException caught: " + e);
             e.printStackTrace();
@@ -117,8 +119,8 @@ public class ClientHandler implements Runnable {
             }
             S.lock();
             S.OutFlow(M);
-            Transation negativeT = new Transation(-M, aSender);
-            a.add(negativeT.getTKey(), negativeT);//Memorizzo in una HasMap
+            S.setTransation(-M, aSender);
+   /////////////////a.add(negativeT.getTKey(), negativeT);//Memorizzo in una HasMap
             S.unlock();
 
             // Incremento del conto ricevente
@@ -128,8 +130,8 @@ public class ClientHandler implements Runnable {
             }
             R.lock();
             R.InFlow(M);
-            Transation positiveT = new Transation(M, aReceiver);
-            a.add(positiveT.getTKey(), positiveT);//Memorizzo in una HasMap
+            R.setTransation(M, aReceiver);
+  ////////////////////a.add(positiveT.getTKey(), positiveT);//Memorizzo in una HasMap
             R.unlock();
 
             message = "successful transation";
@@ -140,4 +142,5 @@ public class ClientHandler implements Runnable {
         }
         return message;
     }
+
 }

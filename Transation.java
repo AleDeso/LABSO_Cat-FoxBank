@@ -8,7 +8,12 @@ public class Transation {
     DateTimeFormatter f = DateTimeFormatter.ofPattern("EEEE, dd/MM/yyyy 'ore:' HH:mm:ss");
     
 
-    public Transation(double cashMoved, String cashAccountkey){
+    public Transation(){
+        this.cashMoved = 0;
+        this.cashAccountKey = null;
+        date =LocalDateTime.now();
+    }
+    public void moveTransation(double cashMoved, String cashAccountkey){
         this.cashMoved = cashMoved;
         this.cashAccountKey = cashAccountkey;
         date =LocalDateTime.now();
@@ -21,9 +26,16 @@ public class Transation {
     }
 
     public String toString(){
-        String trans = "ultima transazione di: " + cashAccountKey + 
-        "\n Ammonta a: "+ cashMoved + 
-        "\n Avvenuta: " + date.format(f);
+
+        String trans = null;
+        if(cashAccountKey != null){
+            trans = "\tultima transazione di: " + cashAccountKey + // NOME LO TOLGO????????????????? 
+            "\tAmmonta a: "+ cashMoved + 
+            "\tAvvenuta: " + date.format(f);
+        }else{
+            trans = "nessuna transazione eseguita! data transazione account: " + date.format(f);
+        }
+
         return trans;
     }
 }

@@ -3,11 +3,12 @@ public class Account {
     private String name = null;
     private double money = 0;
     private boolean isLocked = false;
-    //private String lastTransationKey;
+    private Transation lastT;
 
     public Account(String name, double money){
         this.name = name;
         this.money = money;
+        lastT = new Transation();
     }
      public Account(String name){
         this.name = name;
@@ -21,6 +22,12 @@ public class Account {
     public double getMoney(){
         return money;
     }
+    public Transation getTransation(){
+        return lastT;
+    }
+    public void setTransation(double m, String n){
+        lastT.moveTransation(m, n);
+    }
 
     public void InFlow(double cash){
         money = money + cash;
@@ -31,7 +38,7 @@ public class Account {
     }
 
     public String toString(){
-        return "name: " + name + "\nmoney: " + money + "\n";
+        return "name: " + name + "\tbalance: " + money + lastT;
     }
 
     // lock
