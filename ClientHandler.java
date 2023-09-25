@@ -31,7 +31,7 @@ public class ClientHandler implements Runnable {
                 if (!Thread.interrupted()) {
                     System.out.println("Request: " + request);
                     try {
-                        switch (parts[0]) {
+                        switch (parts[0].toLowerCase()) {
                             case "quit":
                                 closed = true;
                                 to.println("quit");
@@ -50,7 +50,10 @@ public class ClientHandler implements Runnable {
                                 break;
 
                             case "list":
-                                to.println(a.extractAll());
+                                if(parts.length >= 0)
+                                    to.println(a.extractAll());
+                                else
+                                    to.println("error not specify details");
                                 break;
 
                             case "transfer":
@@ -71,28 +74,6 @@ public class ClientHandler implements Runnable {
                             case "transfer_i":
                                 
                                 break;
-
-                            /*case "extract":
-                                if (parts.length > 1) {
-                                    String key = parts[1];
-                                    String result = r.extract(key);
-                                    to.println(result);
-                                } else {
-                                    to.println("No key");
-                                }
-                                break;
-                            */
-                            /*case "add":
-                                if (parts.length > 2) {
-                                    String newKey = parts[1];
-                                    String newValue = parts[2];
-                                    r.add(newKey, newValue);
-                                    to.println("ok");
-                                } else {
-                                    to.println("No key or no value");
-                                }
-                                break;
-                            */
                             default:
                                 to.println("Unknown cmd");
                         }

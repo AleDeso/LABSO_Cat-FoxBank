@@ -56,7 +56,7 @@ public class AccountManager {
         return found;
     }
 
-    public synchronized String extractAll() throws InterruptedException {
+    /*public synchronized String extractAll() throws InterruptedException {
         String listAccount = "";
         for (Map.Entry<String, Account> entry : serchAccount.entrySet()) {
             String indice = entry.getKey();
@@ -67,7 +67,29 @@ public class AccountManager {
         }
         notifyAll();
         return listAccount; 
+    }*/
+    public synchronized String extractAll() throws InterruptedException {
+        StringBuilder listAccountBuilder = new StringBuilder(); // Crea un oggetto StringBuilder
+    
+        for (Map.Entry<String, Account> entry : serchAccount.entrySet()) {
+ ////           String indice = entry.getKey();
+            Account valueAccount = entry.getValue();
+            int c = 0;
+            c++;
+            // Utilizza append() per aggiungere le informazioni dell'account al StringBuilder
+            listAccountBuilder.append(c).append("vai\t");
+ ////           listAccountBuilder.append("Codice: ").append(indice).append("\t");
+            listAccountBuilder.append(valueAccount).append("\n ok");
+        }
+    
+        notifyAll();
+        
+        // Converti il contenuto di StringBuilder in una stringa
+        String listAccount = listAccountBuilder.toString();
+        
+        return listAccount;
     }
+    
 
 
 
