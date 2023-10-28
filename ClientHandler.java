@@ -28,7 +28,7 @@ public class ClientHandler implements Runnable {
             while (!Thread.interrupted()) {
                 String request = from.nextLine(); // LEGGE IL MESSAGGIO DEL SENDER (quindi il terminale del Client)**********************
                 String[] parts = request.split(" ", 4);
-                String p = parts[0].toLowerCase();
+                String p = parts[0].toLowerCase().trim();
                 if (!Thread.interrupted()) {
                     System.out.println("Request: " + request);
                     try {
@@ -73,7 +73,15 @@ public class ClientHandler implements Runnable {
                                 break;
 
                             case "transfer_i":
-                                
+                                if (parts.length > 2) {
+                                    String aSender = parts[1];
+                                    String aReceiver = parts[2];
+                                    to.println("INTERACTIVE TRANSFER START..");
+                                    interattive(aSender,aReceiver);
+                                    to.println("INTERACTIVE TRANSFER END");
+                                } else {
+                                    to.println("error not specify details");
+                                }
                                 break;
                             default:
                                 to.println("Unknown cmd");
@@ -108,7 +116,7 @@ public class ClientHandler implements Runnable {
             e.printStackTrace();
         }
     }
-
+//////////////////////////IMPLEMENTAZIONE COMANDO TRANSFER
     public synchronized String transfer(double M,String aSender,String aReceiver){
         String message = "";
         try {
@@ -124,7 +132,7 @@ public class ClientHandler implements Runnable {
             }else{
                 throw new Exception("transaction interrupt! -- saldo insufficiente :(");
             }
-            
+
 /////////////////a.add(negativeT.getTKey(), negativeT);//Memorizzo in una HasMap
             S.unlock();
 
@@ -149,4 +157,37 @@ public class ClientHandler implements Runnable {
         return message;
     }
 
+        
+ //////////////////////////IMPLEMENTAZIONE COMANDO INTERATTIVE
+        public void interattive(String aSender_i, String aReceiver_i){
+             while (true) {
+                try{
+                    Scanner from_i = new Scanner(s.getInputStream());
+                    PrintWriter to_i = new PrintWriter(s.getOutputStream(), true); 
+                    String request_i = from_i.nextLine();
+                    String[] parts_i = request_i.split(" ", 2);
+                    String p = parts_i[0].toLowerCase().trim();
+                    switch (p) {
+                        case "move":
+                            if (parts_i.length > 1) {
+                                    double money = Double.parseDouble(parts_i[1]);
+                                    String m = transfer(money, aSender_i, aReceiver_i);
+                                    to_i.println(m);
+                                } else {
+                                    to_i.println("error not specify details");
+                                }
+                            break;
+                        case "end":
+                            to_i.println("Finish interattive transation.");
+                            return; //per uscire dal metodo
+                    
+                        default:
+                            to_i.println("unknown cmd.. try again");
+                    }
+                }catch(IOException e){
+                    e.printStackTrace();
+                }
+                
+            }
+        }
 }

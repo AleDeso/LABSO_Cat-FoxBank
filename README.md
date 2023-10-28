@@ -34,7 +34,7 @@ implementino le funzionalit`a descritte nella sezione 2.1.
 2.2.2 Client
 Il client viene avviato da linea di comando e richiede come parametri l’indirizzo
 IP e la porta del server a cui connettersi, ad esempio:
-                      java Client 127.0.0.1 900
+                  java Client 127.0.0.1 900
 Se il server non `e raggiungibile all’indirizzo e alla porta specificati, il
 comando restituisce un messaggio di errore. Se la connessione va a buon
 fine, il client rimane in attesa delle istruzioni dell’utente.
