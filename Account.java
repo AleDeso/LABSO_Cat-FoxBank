@@ -38,7 +38,7 @@ public class Account {
     }
 
     public String toString(){
-        return "name: " + name + "  \tbalance: " + money + lastT;
+        return "name: " + name + "  balance: " + money + lastT;
     }
 
     // lock

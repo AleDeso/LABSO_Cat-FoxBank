@@ -29,10 +29,10 @@ public class Transation {
 
         String trans = null;
         if(cashAccountKey != null){
-            trans = "\tlast transation: "+ cashMoved + 
+            trans = "    #:# last transation: "+ cashMoved + 
             "\tat: " + date.format(f);
         }else{
-            trans = "\tno transation -- creation date: " + date.format(f);
+            trans = " #:# no transation --> creation date: " + date.format(f);
         }
 
         return trans;

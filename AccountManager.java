@@ -32,7 +32,7 @@ public class AccountManager {
             this.serchAccount.put(key,bankAccount );
         }else{
             // Esiste già un account con la stessa chiave
-            throw new IllegalArgumentException("Account: " + key + " gia esistente.");
+            throw new IllegalArgumentException("Account: " + key + " already exist.");
         }
         notifyAll();
     }
@@ -48,11 +48,16 @@ public class AccountManager {
         Account found = this.serchAccount.get(key);
         if(found == null) {
             // L'account con la chiave specificata non esiste
-            throw new IllegalArgumentException("Account " + key + " non trovato");
+            throw new IllegalArgumentException("Account " + key + " not found");
         }
         notifyAll();
         return found;
     }
+
+
+
+
+
 
     /*public synchronized String extractAll() throws InterruptedException {
         String listAccount = "";
@@ -65,6 +70,7 @@ public class AccountManager {
         notifyAll();
         return listAccount; 
     }*/
+    
     public synchronized String extractAll() throws InterruptedException {
         StringBuilder listAccountBuilder = new StringBuilder(); // Crea un oggetto StringBuilder
     

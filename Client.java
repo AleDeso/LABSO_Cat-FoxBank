@@ -15,7 +15,7 @@ public class Client {
             Socket s = new Socket(host, port);
             System.out.println("Connected to server");
 
-            System.out.println("Usage:\t 1.Open <name> <money> \n\t 2.list \n\t 3.transfer <cash> <FirstName> <SecondName>" +
+            System.out.println("Usage:\t 1.Open <name> <money> \n\t 2.list \n\t 3.transfer <cash> <FirstAccount> <SecondAccount>" +
             "\n\t 4.transfer_i <FirstAccount> <SecondAccount> \n\t 5.quit" );
 // SCRIVERE MENU DEL CLIENT 
 // OPEN - LIST - TRANSFER - ecc...
@@ -45,8 +45,8 @@ public class Client {
             }
 
         } catch (IOException e) {
-            System.err.println("IOException caught: " + e);
-            e.printStackTrace();
+            System.err.println("Connection refused!");
+            //e.printStackTrace();
         }
     }
 }
