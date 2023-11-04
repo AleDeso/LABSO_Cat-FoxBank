@@ -40,8 +40,7 @@ public class Account {
     public String toString(){
         return "name: " + name + "  balance: " + money + lastT;
     }
-
-    // lock
+/***********************************  lock ****************************************/
     public synchronized void lock() {
         isLocked = true;
     }

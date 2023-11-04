@@ -24,8 +24,10 @@ public class ClientHandler implements Runnable {
 
             System.out.println("Thread " + Thread.currentThread() + " listening...");
 
-            //boolean closed = false;
+            AccountManager.readDataBase(a); //Leggo gli account memorizzati sul file csv
+
             while (!Thread.interrupted()) {
+
                 String request = from.nextLine(); // LEGGE IL MESSAGGIO DEL SENDER (quindi il terminale del Client)**********************
                 request = request.toLowerCase();
                 String[] parts = request.split(" ", 4);
@@ -37,6 +39,7 @@ public class ClientHandler implements Runnable {
                             case "quit":
                                 //closed = true;
                                 to.println("quit");
+                                a.writeDataBase();
                                 break;
 
                             case "open":
@@ -129,8 +132,6 @@ public class ClientHandler implements Runnable {
                 }
             }
 
-            //to.println("quit");
-
             s.close();
             System.out.println("one Client is Closed");
         } catch (IOException e) {
@@ -151,7 +152,6 @@ public class ClientHandler implements Runnable {
             }
 
 /////////////////a.add(negativeT.getTKey(), negativeT);//Memorizzo in una HasMap
-            
 
             // Incremento del conto ricevente
             a_R.lock();
@@ -171,35 +171,36 @@ public class ClientHandler implements Runnable {
 
         
  //////////////////////////IMPLEMENTAZIONE COMANDO INTERATTIVE
-        public void interattive(Account aSender_i, Account aReceiver_i){
+    public void interattive(Account aSender_i, Account aReceiver_i){
+            
+        while (true) {
+            try{
+                Scanner from_i = new Scanner(s.getInputStream());
+                PrintWriter to_i = new PrintWriter(s.getOutputStream(), true); 
+                String request_i = from_i.nextLine();
+                String[] parts_i = request_i.split(" ", 2);
+                String p = parts_i[0].toLowerCase().trim();
+                switch (p) {
+                    case "move":
+                        if (parts_i.length > 1) {
+                                double money = Double.parseDouble(parts_i[1]);
+                                String m = transfer(money, aSender_i, aReceiver_i);
+                                to_i.println(m);
+                            } else {
+                                to_i.println("error not specify details");
+                            }
+                        break;
+                    case "end":
+                        to_i.println("Finish interattive transation.");
+                        return; //per uscire dal metodo
                 
-            while (true) {
-                try{
-                    Scanner from_i = new Scanner(s.getInputStream());
-                    PrintWriter to_i = new PrintWriter(s.getOutputStream(), true); 
-                    String request_i = from_i.nextLine();
-                    String[] parts_i = request_i.split(" ", 2);
-                    String p = parts_i[0].toLowerCase().trim();
-                    switch (p) {
-                        case "move":
-                            if (parts_i.length > 1) {
-                                    double money = Double.parseDouble(parts_i[1]);
-                                    String m = transfer(money, aSender_i, aReceiver_i);
-                                    to_i.println(m);
-                                } else {
-                                    to_i.println("error not specify details");
-                                }
-                            break;
-                        case "end":
-                            to_i.println("Finish interattive transation.");
-                            return; //per uscire dal metodo
-                    
-                        default:
-                            to_i.println("unknown cmd.. try again");
-                    }
-                }catch(IOException e){
-                    e.printStackTrace();
-                }  
-            }
+                    default:
+                        to_i.println("unknown cmd.. try again");
+                }
+            }catch(IOException e){
+                e.printStackTrace();
+            }  
         }
+    }
+    
 }

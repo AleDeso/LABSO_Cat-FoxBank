@@ -1,5 +1,9 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Scanner;
 
 /*
  * Resource implementa una semplice HashMap con associazioni String->String. Ogni chiave ha una sola stringa associata.
@@ -16,16 +20,6 @@ public class AccountManager {
         this.serchAccount = new HashMap<>(); // usa nome account come chiave e account come parametro
     }
 
-    /*
-     * Inserimento di un elemento nella mappa.
-     * 
-     * Se la chiave esiste già, rimaniamo in attesa, rilasciando il lock
-     * sull'oggetto.
-     * 
-     * Una volta sbloccati e inserito il nuovo elemento, svegliamo eventuali thread
-     * in attesa.
-     */
-
     public synchronized void add(String key, Account bankAccount) throws InterruptedException {
         if (this.serchAccount.get(key) == null) {
              // Non esiste un account con la stessa chiave, quindi possiamo aggiungerlo
@@ -37,13 +31,6 @@ public class AccountManager {
         notifyAll();
     }
 
-    /*
-     * Estrazione di una valore dalla mappa; una volta ottenuto il valore, la chiave
-     * viene rimossa.
-     * 
-     * Duale di add(), rimaniamo in attesa finché la chiave non ha un valore
-     * associato.
-     */
     public synchronized Account extract(String key) throws InterruptedException {
         Account found = this.serchAccount.get(key);
         if(found == null) {
@@ -54,7 +41,38 @@ public class AccountManager {
         return found;
     }
 
+    public static void readDataBase(AccountManager r_a){
+        try (Scanner scan = new Scanner(new File("DataBaseAccount.csv"));) {
+            while (scan.hasNextLine()) {
+                String read = scan.nextLine();
+                String[] parts = read.split(",", 2);
+                Account readAccount = new Account(parts[0],Double.parseDouble(parts[1]));
+                r_a.add(readAccount.getName(),readAccount);
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("File not found");
+        }catch (Exception e){
+            System.out.println(e);
+        }
+    }
 
+    public synchronized void writeDataBase(){
+        try (PrintWriter writer = new PrintWriter(new File("DataBaseAccount.csv"))) {
+        StringBuilder line = new StringBuilder();
+        for (Map.Entry<String, Account> entry : serchAccount.entrySet()) {
+            Account valueAccount = entry.getValue();
+            // Utilizza append() per aggiungere le informazioni dell'account al StringBuilder
+            line.append(valueAccount.getName());
+            line.append(",");
+            line.append(valueAccount.getMoney());
+        }
+        writer.close();
+        System.out.println("DataBaseAccount update.");
+
+        } catch (FileNotFoundException e) {
+            System.out.println(e.getMessage());
+        }
+    }
 
 
 
@@ -72,17 +90,14 @@ public class AccountManager {
     }*/
     
     public synchronized String extractAll() throws InterruptedException {
-        StringBuilder listAccountBuilder = new StringBuilder(); // Crea un oggetto StringBuilder
-    
+        // Crea un oggetto StringBuilder
+        StringBuilder listAccountBuilder = new StringBuilder(); 
         int c = 0;
         for (Map.Entry<String, Account> entry : serchAccount.entrySet()) {
-            //String indice = entry.getKey();
             Account valueAccount = entry.getValue();
-///////////////////////7 Transation last = lastTransation.get(indice);
             c++;
             // Utilizza append() per aggiungere le informazioni dell'account al StringBuilder
             listAccountBuilder.append(c + ". ");
- ////           listAccountBuilder.append("Codice: ").append(indice).append("\t");
             listAccountBuilder.append(valueAccount).append("\n");
         }
     
