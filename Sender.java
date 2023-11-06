@@ -18,21 +18,22 @@ public class Sender implements Runnable {
             PrintWriter to = new PrintWriter(this.s.getOutputStream(), true);
             while (true) {
                 String requestClient = scan.nextLine(); // LEGGE TERMINALE CLIENT   ***************************************
-                /*
-                 * se il thread è stato interrotto mentre leggevamo l'input da tastiera, inviamo
-                 * "quit" al server e usciamo dal ciclo
-                 */
-                if (Thread.interrupted()) {
-                    to.println("quit");
-                    break;
-                }
-                /* in caso contrario proseguiamo e analizziamo l'input inserito */
                 
-                to.println(requestClient); // MANDA LA RICHIESTA AL SERVER 
+                 
 
                 if (requestClient.equalsIgnoreCase("quit")) {
                     to.println("quit");
                     break;
+                }else if (Thread.interrupted()) {
+                    to.println("quit");
+                    break;
+                    /*
+                    * se il thread è stato interrotto mentre leggevamo l'input da tastiera, inviamo
+                    * "quit" al server e usciamo dal ciclo
+                    */
+                }else{
+                    /* in caso contrario proseguiamo e analizziamo l'input inserito */
+                    to.println(requestClient); // MANDA LA RICHIESTA AL SERVER
                 }
             }
             System.out.println("Sender closed.");

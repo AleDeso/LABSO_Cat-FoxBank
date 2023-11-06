@@ -1,6 +1,7 @@
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class ClientHandler implements Runnable {
@@ -27,8 +28,7 @@ public class ClientHandler implements Runnable {
             AccountManager.readDataBase(a); //Leggo gli account memorizzati sul file csv
 
             while (!Thread.interrupted()) {
-                //if(from.hasNextLine())
-                //{
+                try{
                     String request = from.nextLine(); // LEGGE IL MESSAGGIO DEL SENDER (quindi il terminale del Client)**********************
                     request = request.toLowerCase();
                     String[] parts = request.split(" ", 4);
@@ -133,11 +133,14 @@ public class ClientHandler implements Runnable {
                      else {
                         break;
                     }
-                //}
+                } catch (NoSuchElementException e) {
+                    System.out.println(" Client terminated");
+                    break;
+                }
             }
 
             s.close();
-            System.out.println("one Client is Closed");
+            //System.out.println("one Client is Closed");
         } catch (IOException e) {
             System.err.println("ClientHandler: IOException caught: " + e);
             e.printStackTrace();
