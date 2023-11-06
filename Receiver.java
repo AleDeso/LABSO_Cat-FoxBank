@@ -1,5 +1,6 @@
 import java.io.IOException;
 import java.net.Socket;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class Receiver implements Runnable {
@@ -20,15 +21,18 @@ public class Receiver implements Runnable {
             // CHE E' UNA CONNESSIONE SOCKET; QUINDI DAL SERVER
             while (true) {
                 String response = from.nextLine(); // LEGGIAMO QUELLO CHE CI MANDA IL SERVER (tramite ClientHandler)
-                System.out.println("Received: " + response);
-                if (response.equals("quit")) {
+                
+                if (response.equalsIgnoreCase("quit")) {
                     break;
                 }
-
+                System.out.println("Received: " + response);
             }
         } catch (IOException e) {
             System.err.println("IOException caught: " + e);
             e.printStackTrace();
+            
+        }catch(NoSuchElementException e){
+            System.err.println("NoSuchElementException caught: Server not available!");
         } finally {
             this.sender.interrupt();
             System.out.println("Receiver closed.");

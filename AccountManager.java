@@ -53,6 +53,8 @@ public class AccountManager {
             System.out.println("File not found");
         }catch (Exception e){
             System.out.println(e);
+        } finally{
+            //scan.close();
         }
     }
 
@@ -65,12 +67,17 @@ public class AccountManager {
             line.append(valueAccount.getName());
             line.append(",");
             line.append(valueAccount.getMoney());
+            line.append("\n");
+            
         }
+        writer.print(line);
         writer.close();
         System.out.println("DataBaseAccount update.");
 
         } catch (FileNotFoundException e) {
-            System.out.println(e.getMessage());
+            System.out.println("QUINDI????");
+        }finally{
+            //writer.close();
         }
     }
 

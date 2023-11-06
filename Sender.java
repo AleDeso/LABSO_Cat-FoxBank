@@ -14,14 +14,13 @@ public class Sender implements Runnable {
     @Override
     public void run() {
         Scanner scan = new Scanner(System.in);
-
         try {
             PrintWriter to = new PrintWriter(this.s.getOutputStream(), true);
             while (true) {
                 String requestClient = scan.nextLine(); // LEGGE TERMINALE CLIENT   ***************************************
                 /*
                  * se il thread è stato interrotto mentre leggevamo l'input da tastiera, inviamo
-                 * "quit" al server e usciamo
+                 * "quit" al server e usciamo dal ciclo
                  */
                 if (Thread.interrupted()) {
                     to.println("quit");
@@ -31,8 +30,8 @@ public class Sender implements Runnable {
                 
                 to.println(requestClient); // MANDA LA RICHIESTA AL SERVER 
 
-                if (requestClient.equals("quit")) {
-                    to.println("quitC");
+                if (requestClient.equalsIgnoreCase("quit")) {
+                    to.println("quit");
                     break;
                 }
             }

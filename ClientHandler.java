@@ -27,109 +27,113 @@ public class ClientHandler implements Runnable {
             AccountManager.readDataBase(a); //Leggo gli account memorizzati sul file csv
 
             while (!Thread.interrupted()) {
+                //if(from.hasNextLine())
+                //{
+                    String request = from.nextLine(); // LEGGE IL MESSAGGIO DEL SENDER (quindi il terminale del Client)**********************
+                    request = request.toLowerCase();
+                    String[] parts = request.split(" ", 4);
+                    String p = parts[0].trim();
+                    if (!Thread.interrupted()) {
+                        System.out.println("Request: " + request);
+                        try {
+                            switch (p) {
+                                case "quit":
+                                    //closed = true;
+                                    a.writeDataBase();
+                                    to.println("quit");
+                                    break;
 
-                String request = from.nextLine(); // LEGGE IL MESSAGGIO DEL SENDER (quindi il terminale del Client)**********************
-                request = request.toLowerCase();
-                String[] parts = request.split(" ", 4);
-                String p = parts[0].trim();
-                if (!Thread.interrupted()) {
-                    System.out.println("Request: " + request);
-                    try {
-                        switch (p) {
-                            case "quit":
-                                //closed = true;
-                                to.println("quit");
-                                a.writeDataBase();
-                                break;
-
-                            case "open":
-                                if (parts.length > 2) {
-                                    String name = parts[1];
-                                    double money = Double.parseDouble(parts[2]);
-                                    Account newAccount = new Account(name, money);
-                                    a.add(newAccount.getName(),newAccount);
-                                    to.println("made account called: " + newAccount.getName());
-                                } else {
-                                    to.println("error not specify details");
-                                }
-                                break;
-
-                            case "list":
-                                if(parts.length >= 0)
-                                    to.println(a.extractAll());
-                                else
-                                    to.println("error not specify details");
-                                break;
-
-                            case "transfer":
-                                if (parts.length > 3) {
-                                    double M = Double.parseDouble(parts[1]);
-                                    String aSender = parts[2];
-                                    String aReceiver = parts[3];
-                                    Account S = a.extract(aSender);
-                                    Account R = a.extract(aReceiver);
-                                    while(S.isLocked()){
-                                            S.wait();
+                                case "open":
+                                    if (parts.length > 2) {
+                                        String name = parts[1];
+                                        double money = Double.parseDouble(parts[2]);
+                                        Account newAccount = new Account(name, money);
+                                        a.add(newAccount.getName(),newAccount);
+                                        to.println("made account called: " + newAccount.getName());
+                                    } else {
+                                        to.println("error not specify details");
                                     }
-                                    while(R.isLocked()){
-                                            R.wait();
-                                    }
-                                    S.lock();
-                                    R.lock();
-                                    String mess = transfer(M, S, R);
-                                    to.println(mess);
-                                    S.unlock();
-                                    R.unlock();
-                                    
-                                }else{
-                                     to.println("error not specify details");
-                                }
-                                break;
+                                    break;
 
-                            case "transfer_i":
-                                if (parts.length > 2) {
-                                    String aSender = parts[1];
-                                    String aReceiver = parts[2];
-                                    to.println("Start interattive transation: \n" + "\t Commands: 1.move <money> \t 2.end"); 
-                                    Account S = a.extract(aSender);
-                                    Account R = a.extract(aReceiver);
-                                    while(S.isLocked()){
-                                            S.wait();
+                                case "list":
+                                    if(parts.length >= 0)
+                                        to.println(a.extractAll());
+                                    else
+                                        to.println("error not specify details");
+                                    break;
+
+                                case "transfer":
+                                    if (parts.length > 3) {
+                                        double M = Double.parseDouble(parts[1]);
+                                        String aSender = parts[2];
+                                        String aReceiver = parts[3];
+                                        Account S = a.extract(aSender);
+                                        Account R = a.extract(aReceiver);
+                                        while(S.isLocked()){
+                                                S.wait();
+                                        }
+                                        while(R.isLocked()){
+                                                R.wait();
+                                        }
+                                        S.lock();
+                                        R.lock();
+                                        String mess = transfer(M, S, R);
+                                        to.println(mess);
+                                        S.unlock();
+                                        R.unlock();
+                                        
+                                    }else{
+                                        to.println("error not specify details");
                                     }
-                                    while(R.isLocked()){
-                                            R.wait();
+                                    break;
+
+                                case "transfer_i":
+                                    if (parts.length > 2) {
+                                        String aSender = parts[1];
+                                        String aReceiver = parts[2];
+                                        to.println("Start interattive transation: \n" + "\t Commands: 1.move <money> \t 2.end"); 
+                                        Account S = a.extract(aSender);
+                                        Account R = a.extract(aReceiver);
+                                        while(S.isLocked()){
+                                                S.wait();
+                                        }
+                                        while(R.isLocked()){
+                                                R.wait();
+                                        }
+                                        S.lock();
+                                        R.lock();
+                                        interattive(S,R);
+                                        S.unlock();
+                                        R.unlock();
+                                    } else {
+                                        to.println("error not specify details");
                                     }
-                                    S.lock();
-                                    R.lock();
-                                    interattive(S,R);
-                                    S.unlock();
-                                    R.unlock();
-                                } else {
-                                    to.println("error not specify details");
-                                }
-                                break;
-                            default:
-                                to.println("Unknown cmd");
+                                    break;
+                                default:
+                                    to.println("Unknown cmd");
+                            }
+                        } catch(IllegalArgumentException e){
+                            /*
+                            * mando il messaggio che la chiave (quindi l'account che si vuole inserire)
+                            * esiste già, ovvero un'altro account ha quel nome id.
+                            */
+                            to.println(e); //LASCIARE SOLO 'e' ! Perchè gli lancio l'eccezione dal metodo add di AccountMAnager. 
+                            //"Account 'nome' already exist"
+
+                        }catch (InterruptedException e) {
+                            /*
+                            * se riceviamo un Thread.interrupt() mentre siamo in attesa di add() o
+                            * extract(), interrompiamo il ciclo come richiesto, e passiamo alla chiusura
+                            * del socket
+                            */
+                            to.println("quit");
+                            break;
                         }
-                    } catch(IllegalArgumentException e){
-                        /*
-                         * mando il messaggio che la chiave (quindi l'account che si vuole inserire)
-                         * esiste già, ovvero un'altro account ha quel nome id.
-                         */
-                        to.println(e);
-
-                    }catch (InterruptedException e) {
-                        /*
-                         * se riceviamo un Thread.interrupt() mentre siamo in attesa di add() o
-                         * extract(), interrompiamo il ciclo come richiesto, e passiamo alla chiusura
-                         * del socket
-                         */
-                        to.println("quit");
+                    }
+                     else {
                         break;
                     }
-                } else {
-                    break;
-                }
+                //}
             }
 
             s.close();

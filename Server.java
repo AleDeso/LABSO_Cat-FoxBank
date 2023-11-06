@@ -11,7 +11,7 @@ public class Server {
 
         int port = Integer.parseInt(args[0]);  //.parseInt() trasforma da string a int
         Scanner scan = new Scanner(System.in);
-
+        // VOLEVO PROVARE A MANDARE DA QUA UN QUIT PrintWriter to = new PrintWriter(s.getOutputStream(), true);
         try {
             ServerSocket server = new ServerSocket(port);
             /*
@@ -24,7 +24,7 @@ public class Server {
 
             String command = "";
 
-            while (!command.equals("quit")) {
+            while (!command.equalsIgnoreCase("quit")) {
                 command = scan.nextLine();
             }
 
@@ -41,7 +41,7 @@ public class Server {
             }
             System.out.println("Main thread terminated.");
         } catch (IOException e) {
-            System.err.println("IOException caught: " + e);
+            System.err.println("(SERVER)IOException caught: " + e); // QUANDO SI VERIFICA QUESTA ECCEZIONE?
             e.printStackTrace();
         } finally {
             scan.close();
