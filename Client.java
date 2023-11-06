@@ -4,7 +4,7 @@ import java.net.Socket;
 public class Client {
     public static void main(String[] args) {
         if (args.length < 2) {
-            System.err.println("Usage: java Client <host> <port>");
+            System.out.println("Usage: java Client <host> <port>");
             return;
         }
 
@@ -15,8 +15,8 @@ public class Client {
             Socket s = new Socket(host, port);
             System.out.println("Connected to server");
 
-            System.out.println("Usage:\t 1.Open <name> <money> \n\t 2.list \n\t 3.transfer <cash> <FirstAccount> <SecondAccount>" +
-            "\n\t 4.transfer_i <FirstAccount> <SecondAccount> \n\t 5.quit" );
+            System.out.println("Usage:\t 1.Open <name> <money> \n\t 2.list \n\t 3.transfer <cash> <SenderAccount> <ReciverAccount>" +
+            "\n\t 4.transfer_i <SenderAccount> <ReciverAccount> \n\t 5.quit" );
 // SCRIVERE MENU DEL CLIENT 
 // OPEN - LIST - TRANSFER - ecc...
 
@@ -37,7 +37,8 @@ public class Client {
                 receiver.join();
                 s.close();
                 System.out.println("Socket closed.");
-            } catch (InterruptedException e) {
+            } catch (InterruptedException e) { 
+                System.out.println("Client interrupted");
                 /*
                  * se qualcuno interrompe questo thread nel frattempo, terminiamo
                  */
@@ -45,7 +46,7 @@ public class Client {
             }
 
         } catch (IOException e) {
-            System.err.println("Connection refused!");
+            System.err.println("Connection refused");
             //e.printStackTrace();
         }
     }

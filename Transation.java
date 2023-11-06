@@ -5,7 +5,7 @@ public class Transation {
     LocalDateTime date;
     double cashMoved = 0;
     String cashAccountKey;
-    DateTimeFormatter f = DateTimeFormatter.ofPattern("EE, dd/MM/yyyy 'ore:' HH:mm:ss");
+    DateTimeFormatter f = DateTimeFormatter.ofPattern("EE, dd/MM/yyyy, 'ore:' HH:mm:ss");
     
 
     public Transation(){
@@ -17,7 +17,6 @@ public class Transation {
         this.cashMoved = cashMoved;
         this.cashAccountKey = cashAccountkey;
         date =LocalDateTime.now();
-        //Memorizzo in una HasMap
     }
 
     
@@ -34,7 +33,6 @@ public class Transation {
         }else{
             trans = " #:# no transation --> creation date: " + date.format(f);
         }
-
         return trans;
     }
 }

@@ -15,13 +15,13 @@ public class SocketListener implements Runnable {
     @Override
     public void run() {
         try {
-            this.server.setSoTimeout(10000); // attende 10 sec prima di sollevare una SocketTimeoutException
+            this.server.setSoTimeout(5000);
             AccountManager r = new AccountManager(); 
-            // Risorsa che controlla HashMap degli account
+            // Risorsa che controlla HashMap degi account
 
             while (!Thread.interrupted()) {
                 try {
-                                        ///////////////System.out.println("Waiting for a new client...");
+                                                                                        //System.out.println("Waiting for a new client...");
                     /*
                      * Questa istruzione è bloccante, a prescindere da Thread.interrupt(). Occorre
                      * quindi controllare, una volta accettata la connessione, che il server non sia
@@ -32,27 +32,25 @@ public class SocketListener implements Runnable {
                      * Thread nella condizione del while().
                      */
                     Socket s = this.server.accept();
-                    //PrintWriter to = new PrintWriter(s.getOutputStream(), true);
                     if (!Thread.interrupted()) {
                         System.out.println("Client connected");
 
                         /* crea un nuovo thread per lo specifico socket */
-                        Thread handlerThread = new Thread(new ClientHandler(s, r)); // Thread che va ad ascoltare richieste del Client in CLIENTHANDLER
+                        Thread handlerThread = new Thread(new ClientHandler(s, r)); // Thread che va ad ascoltare richieste del Client
                         handlerThread.start();
                         this.worker.add(handlerThread);
                         /*
                          * una volta creato e avviato il thread, torna in ascolto per il prossimo client
                          */
                     } else {
-                        
-                        s.close(); // CHIUDO LA CONNESSIONE CON IL THREAD ASSOCIATO A UN CLIENT
+                        s.close();
                         break;
                     }
                 } catch (SocketTimeoutException e) {
                     /* in caso di timeout procediamo semplicemente con l'esecuzione */
-                        /////////////////////System.out.println("Timeout, continuing...");
+                                                                                    //System.out.println("Timeout, continuing...");
                     continue;
-                } catch (IOException e) {
+                } catch (IOException e) { //GESTISCIIIII
                     /*
                      * s.close() potrebbe sollevare un'eccezione; in questo caso non vogliamo finire
                      * nel "catch" esterno, perché non abbiamo ancora chiamato this.server.close()
@@ -60,12 +58,12 @@ public class SocketListener implements Runnable {
                     break;
                 }
             }
-            //r.writeDataBase();
             this.server.close();
-        } catch (IOException e) {
+        } catch (IOException e) { //Ha senso scrivere cosi e bast?
             System.err.println("SocketListener: IOException caught: " + e);
             e.printStackTrace();
         }
+
         System.out.println("Interrupting workers...");
         for (Thread w : this.worker) {
             System.out.println("Interrupting " + w + "...");

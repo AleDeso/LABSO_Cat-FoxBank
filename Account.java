@@ -10,10 +10,10 @@ public class Account {
         this.money = money;
         lastT = new Transation();
     }
-     public Account(String name){
-        this.name = name;
+     /*public Account(String name){
+       this.name = name;
         this.money = 0;
-    }
+    }*/
 
     public String getName(){
         return name;
@@ -40,7 +40,8 @@ public class Account {
     public String toString(){
         return "name: " + name + "  balance: " + money + lastT;
     }
-/***********************************  lock ****************************************/
+
+    // lock
     public synchronized void lock() {
         isLocked = true;
     }
