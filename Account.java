@@ -1,14 +1,24 @@
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
+
 public class Account {
     
     private String name = null;
     private double money = 0;
     private boolean isLocked = false;
     private Transation lastT;
-
+    DateTimeFormatter f = DateTimeFormatter.ofPattern("EE-dd/MM/yyyy HH:mm:ss", Locale.ITALIAN);
+    
     public Account(String name, double money){
         this.name = name;
         this.money = money;
         lastT = new Transation();
+    }
+    public Account(String name, double money,String t, double m){
+        this.name = name;
+        this.money = money;
+        lastT = new Transation(name, LocalDateTime.parse(t,f), m);
     }
      /*public Account(String name){
        this.name = name;
@@ -25,6 +35,9 @@ public class Account {
     public Transation getTransation(){
         return lastT;
     }
+    public String getTransfer(){
+        return lastT.getValueTransf();
+    }
     public void setTransation(double m, String n){
         lastT.moveTransation(m, n);
     }
@@ -40,8 +53,7 @@ public class Account {
     public String toString(){
         return "name: " + name + "  balance: " + money + lastT;
     }
-
-    // lock
+/***********************************  lock ****************************************/
     public synchronized void lock() {
         isLocked = true;
     }

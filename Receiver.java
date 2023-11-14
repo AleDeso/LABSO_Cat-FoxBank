@@ -20,17 +20,16 @@ public class Receiver implements Runnable {
             // GRAZIE A ".getInputStream" LEGGIAMO I DATI MANDATI CHE ARRIVANO DA "s" 
             // CHE E' UNA CONNESSIONE SOCKET; QUINDI DAL SERVER
             while (true) {
-                String response = from.nextLine(); // LEGGIAMO QUELLO CHE CI MANDA IL SERVER (tramite ClientHandler)
-                System.out.println("Received: " + response);
+                String response = from.nextLine(); // LEGGIAMO QUELLO CHE CI MANDA IL SERVER 
+                
                 if (response.equalsIgnoreCase("quit")) {
                     break;
                 }
-
+                System.out.println("Received: " + response);
             }
-        } catch (IOException e) {
+        }catch (IOException e) {
             System.err.println("IOException caught: " + e);
             e.printStackTrace();
-            this.sender.interrupt();
         } catch(NoSuchElementException e){
             System.out.println("Server not available");
         }finally {

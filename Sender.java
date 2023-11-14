@@ -21,13 +21,13 @@ public class Sender implements Runnable {
                 String requestClient = scan.nextLine(); // LEGGE TERMINALE CLIENT   ***************************************
              
                 
-                 if (requestClient.equals("quit")) {
-                    to.println("quitClient");
+                 if (requestClient.equalsIgnoreCase("quit")) {
+                    to.println("quit");
                     break;
                 }else if (Thread.interrupted()) {
                     to.println("quit");
                     break;
-                       /*
+                 /*
                  * se il thread è stato interrotto mentre leggevamo l'input da tastiera, inviamo
                  * "quit" al server e usciamo
                  */

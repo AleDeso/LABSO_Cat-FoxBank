@@ -18,7 +18,7 @@ public class SocketListener implements Runnable {
             this.server.setSoTimeout(5000);
             AccountManager r = new AccountManager(); 
             // Risorsa che controlla HashMap degi account
-
+            AccountManager.readDataBase(r);   //Leggo gli account memorizzati sul file
             while (!Thread.interrupted()) {
                 try {
                                                                                         //System.out.println("Waiting for a new client...");

@@ -17,8 +17,6 @@ public class Client {
 
             System.out.println("Usage:\t 1.Open <name> <money> \n\t 2.list \n\t 3.transfer <cash> <SenderAccount> <ReciverAccount>" +
             "\n\t 4.transfer_i <SenderAccount> <ReciverAccount> \n\t 5.quit" );
-// SCRIVERE MENU DEL CLIENT 
-// OPEN - LIST - TRANSFER - ecc...
 
             /*
              * Delega la gestione di input/output a due thread separati, 
