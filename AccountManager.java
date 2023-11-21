@@ -15,16 +15,6 @@ public class AccountManager {
         this.busyAccount = new HashMap<>();
     }
 
- //????????????????????????????????????????????????????????????????????????????????????   
- /*****public HashMap<String, Account> getSerchAccount() {
-        return serchAccount;
-    }
-
-    public void setSerchAccount(HashMap<String, Account> serchAccount) {
-        this.serchAccount = serchAccount;
-    }
-*****/
-//?????????????????????????????????????????????????????????????????????????????
     public synchronized void addAccount(String key, Account bankAccount) throws InterruptedException {
         if (this.serchAccount.get(key) == null) {
              // Non esiste un account con la stessa chiave, quindi possiamo aggiungerlo
@@ -49,16 +39,15 @@ public class AccountManager {
     }
 
     public synchronized String extractAll() throws InterruptedException {
-        StringBuilder listAccountBuilder = new StringBuilder(); // Crea un oggetto StringBuilder
+        StringBuilder listAccountBuilder = new StringBuilder(); 
+        // Crea un oggetto StringBuilder
         int c = 0;
         for (Map.Entry<String, Account> entry : serchAccount.entrySet()) {
-            //String indice = entry.getKey();
             Account valueAccount = entry.getValue();
-            c++;
-            // Utilizza append() per aggiungere le informazioni dell'account al StringBuilder
+            c++; 
             listAccountBuilder.append(c + ". ");
- ////           listAccountBuilder.append("Codice: ").append(indice).append("\t");
             listAccountBuilder.append(valueAccount).append("\n");
+            // Utilizza append() per aggiungere le informazioni dell'account al StringBuilder
         }
         
         // Converti il contenuto di StringBuilder in una stringa
@@ -120,10 +109,8 @@ public class AccountManager {
         Account S = extract(a_S);
         Account R = extract(a_R);
         checkBusy(S, R,to);
-            busyAccount.put(S.getName(),S);
-            busyAccount.put(R.getName(),R);
         m = sectionMove(S,R,M);
-            busyEnd(S,R);
+        busyEnd(S,R);
         return m;
     }
     //                                  Transazioni tra gli account
@@ -133,7 +120,7 @@ public class AccountManager {
             // Decremento del conto mittente
             if(S.getMoney()>=M){
                 S.OutFlow(M);
-                S.setTransation(-M, S.getName());
+                S.setTransaction(-M, S.getName());
             }else{
                 throw new Exception("transaction interrupt! -- insufficient balance :(");
             }
@@ -141,9 +128,9 @@ public class AccountManager {
 
             // Incremento del conto ricevente
             R.InFlow(M);
-            R.setTransation(+M, R.getName());
+            R.setTransaction(+M, R.getName());
             
-            message = "successful transation";
+            message = "successful transaction";
             
 
         }catch (Exception e) {   
@@ -160,7 +147,7 @@ public class AccountManager {
             Account S = extract(aSender_i);
             Account R = extract(aReceiver_i);
             checkBusy(S, R, to_i);
-            to_i.println("Start interattive transation: \nCommands:");
+            to_i.println("Start interattive transaction: \nCommands:");
         while (true) {
             try{ 
                 to_i.println(" 1.:move <money>  2.:end");
@@ -178,7 +165,7 @@ public class AccountManager {
                             }
                         break;
                     case ":end":
-                        to_i.println("Finish interattive transation.");
+                        to_i.println("Finish interattive transaction.");
                         busyEnd(S,R);
                         return; //per uscire dal metodo
                     case "quit":

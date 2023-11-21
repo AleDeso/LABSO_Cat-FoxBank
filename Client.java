@@ -15,7 +15,8 @@ public class Client {
             Socket s = new Socket(host, port);
             System.out.println("Connected to server");
 
-            System.out.println("Usage:\t 1.Open <name> <money> \n\t 2.list \n\t 3.transfer <cash> <SenderAccount> <ReciverAccount>" +
+            System.out.println("Usage:\t 1.Open <name> <money> \n\t 2.list \n\t" + 
+            "3.transfer <cash> <SenderAccount> <ReciverAccount>" +
             "\n\t 4.transfer_i <SenderAccount> <ReciverAccount> \n\t 5.quit" );
 
             /*

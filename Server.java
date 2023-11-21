@@ -9,7 +9,7 @@ public class Server {
             System.out.println("Usage: java Server <port>");
             return;
         }
-             int port = Integer.parseInt(args[0]);
+         int port = Integer.parseInt(args[0]);
                   
         Scanner scan = new Scanner(System.in);
         
@@ -21,9 +21,9 @@ public class Server {
              * chiudere il programma)
              */
             System.out.println("Apro la connessione");
-            Thread serverThread = new Thread(new SocketListener(server)); // Collega il thread a socketListener in modo che si occupi della connessione
+            Thread serverThread = new Thread(new SocketListener(server)); 
+            // Collega il thread a socketListener in modo che si occupi della connessione
             serverThread.start();
-            System.out.println("Funziona");
 
             String command = "";
 
@@ -32,21 +32,19 @@ public class Server {
             }
 
             try {
-                serverThread.interrupt(); // va a uscire dal ciclo SocketListener
+                serverThread.interrupt(); //interrompe SocketListener
                 /* attendi la terminazione del thread */
                 serverThread.join();
                 
             } catch (InterruptedException e) {
                 System.out.println("Server interrotto");
-                /*
-                 * se qualcuno interrompe questo thread nel frattempo, terminiamo
-                 */
+                //se qualcosa interrompe questo thread chiudiamo il server
                 return;
             }
             System.out.println("Main thread terminated.");
         } catch (IOException e) {
-            System.err.println("(SERVER)IOException caught: " + e);//CHIEDI come e quando si verificano
-            e.printStackTrace();
+            System.err.println("(SERVER)IOException caught: " + e);
+            // cattura un errore di input o output 
         } finally {
             scan.close();
         }

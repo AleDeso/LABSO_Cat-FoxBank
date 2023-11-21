@@ -18,37 +18,28 @@ public class SocketListener implements Runnable {
             this.server.setSoTimeout(5000);
             AccountManager r = new AccountManager(); 
             // Risorsa che controlla HashMap degi account
-            AccountManager.readDataBase(r);   //Leggo gli account memorizzati sul file
+            AccountManager.readDataBase(r);   
+            //Leggo gli account memorizzati sul file
             while (!Thread.interrupted()) {
                 try {
-                                                                                        //System.out.println("Waiting for a new client...");
-                    /*
-                     * Questa istruzione è bloccante, a prescindere da Thread.interrupt(). Occorre
-                     * quindi controllare, una volta accettata la connessione, che il server non sia
-                     * stato interrotto.
-                     * 
-                     * In caso venga raggiunto il timeout, viene sollevata una
-                     * SocketTimeoutException, dopo la quale potremo ricontrollare lo stato del
-                     * Thread nella condizione del while().
-                     */
+                     //System.out.println("Waiting for a new client...");
                     Socket s = this.server.accept();
                     if (!Thread.interrupted()) {
                         System.out.println("Client connected");
 
-                        /* crea un nuovo thread per lo specifico socket */
-                        Thread handlerThread = new Thread(new ClientHandler(s, r)); // Thread che va ad ascoltare richieste del Client
+                        // crea un nuovo thread per lo specifico socket
+                        Thread handlerThread = new Thread(new ClientHandler(s, r)); 
+                        // Thread che va ad ascoltare richieste del Client
                         handlerThread.start();
                         this.worker.add(handlerThread);
-                        /*
-                         * una volta creato e avviato il thread, torna in ascolto per il prossimo client
-                         */
+                        // una volta creato e avviato il thread, torna in ascolto per il prossimo client
                     } else {
                         s.close();
                         break;
                     }
                 } catch (SocketTimeoutException e) {
-                    /* in caso di timeout procediamo semplicemente con l'esecuzione */
-                                                                                    //System.out.println("Timeout, continuing...");
+                    // in caso di timeout ricontrolliamo la condizione del while e proseguiamo con l'esecuzione
+                    //System.out.println("Timeout, continuing...");
                     continue;
                 } catch (IOException e) { //GESTISCIIIII
                     /*
@@ -59,9 +50,8 @@ public class SocketListener implements Runnable {
                 }
             }
             this.server.close();
-        } catch (IOException e) { //Ha senso scrivere cosi e bast?
+        } catch (IOException e) { 
             System.err.println("SocketListener: IOException caught: " + e);
-            e.printStackTrace();
         }
 
         System.out.println("Interrupting workers...");

@@ -7,7 +7,6 @@ import java.util.Scanner;
 public class ClientHandler implements Runnable {
 
     Socket s;
-    /* la risorsa in questo caso è necessariamente condivisa tra tutti i thread */
     AccountManager a;
 
     public ClientHandler(Socket s, AccountManager a) {
@@ -27,14 +26,17 @@ public class ClientHandler implements Runnable {
 
             while (!Thread.interrupted()) {
                 try{
-                String request = from.nextLine(); // LEGGE IL MESSAGGIO DEL SENDER (quindi il terminale del Client)**********************
+                String request = from.nextLine(); 
+                // LEGGE IL MESSAGGIO DEL SENDER (quindi il terminale del Client)
                 request=request.toLowerCase();
                 String[] parts = request.split(" ", 4);
+                //divido l'input da tastiera sulle celle di un array
                 String p = parts[0].trim();
                 if (!Thread.interrupted()) {
                     System.out.println("Request: " + request);
                     try {
                         switch (p) {
+                            // controllo il primo elemento dell'array
                             case "quit":
                                 a.writeDataBase();
                                 to.println("quit");
@@ -42,7 +44,7 @@ public class ClientHandler implements Runnable {
 
                             case "open":
                                 if (parts.length > 2) {
-                                    String name = parts[1]; //ha senso fare un trim se lo spli taglia bene?
+                                    String name = parts[1];
                                     double money = Double.parseDouble(parts[2]);
                                     Account newAccount = new Account(name, money);
                                     a.addAccount(newAccount.getName(),newAccount);
@@ -88,12 +90,10 @@ public class ClientHandler implements Runnable {
                                to.println("Unknown service");
                         }
                     } catch(IllegalArgumentException e){
-                        /*
-                        * mando il messaggio che la chiave (quindi l'account che si vuole inserire)
-                        * esiste già, ovvero un'altro account ha quel nome id.
-                        */
-                        to.println(e); //LASCIARE SOLO 'e' ! Perchè gli lancio l'eccezione dal metodo add di AccountMAnager. 
-                                        //"Account 'nome' already exist"
+                        
+                        to.println(e); 
+                        //Cattura l'eccezione che gli lancio dal metodo add di AccountMAnager. 
+                         //"Account 'nome' already exist"
 
                         }catch (InterruptedException e) {
                         
@@ -111,17 +111,14 @@ public class ClientHandler implements Runnable {
                         break;
                     }
                 }catch(NoSuchElementException e){
-                System.out.println("Client terminated");
-                break;
+                    System.out.println("Client terminated");
+                    break;
                 }
             }
-            
-
             s.close();
-            System.out.println("one Client is Closed");
+            System.out.println("Client Close");
         } catch (IOException e) {
             System.err.println("ClientHandler: IOException caught: " + e);
-            e.printStackTrace();
         }
     }
     
