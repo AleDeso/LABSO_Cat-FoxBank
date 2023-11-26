@@ -49,9 +49,10 @@ public class AccountManager {
             listAccountBuilder.append(valueAccount).append("\n");
             // Utilizza append() per aggiungere le informazioni dell'account al StringBuilder
         }
-        
-        // Converti il contenuto di StringBuilder in una stringa
+        listAccountBuilder.setLength(listAccountBuilder.length() - "\n".length());
+        //Utilizzo setLength per rimuovere l'ultimo carattere \n , usato per andare a capo, che ho inserito.
         return  listAccountBuilder.toString();
+        // Converti il contenuto di StringBuilder in una stringa e ritorna una stringa.
     }
 
 /**************************************************************************************************************************************/
@@ -63,11 +64,17 @@ public class AccountManager {
             while (scan.hasNextLine()) {
                 String read = scan.nextLine();
                 String[] parts = read.split(";", 4);
-                Account readAccount = new Account(parts[0],Double.parseDouble(parts[1]), parts[2],Double.parseDouble(parts[3]));
-                r_a.addAccount(readAccount.getName(),readAccount);
+                //controllo se è presente ultima transazione
+                if(parts.length > 3){
+                    Account readAccount = new Account(parts[0],Double.parseDouble(parts[1]), parts[2],Double.parseDouble(parts[3]));
+                    r_a.addAccount(readAccount.getName(),readAccount);
+                }else{
+                    Account readAccount = new Account(parts[0],Double.parseDouble(parts[1]), parts[2]);
+                    r_a.addAccount(readAccount.getName(),readAccount);
+                }
             }
             System.out.println("DataBase loaded.");
-        } catch (FileNotFoundException e) {
+        }catch (FileNotFoundException e) {
             System.out.println("File not found");
         }catch (Exception e){
             System.out.println(e);
@@ -144,13 +151,14 @@ public class AccountManager {
  //////////////////////////IMPLEMENTAZIONE COMANDO INTERATTIVE
  // no synchronized perhè voglio eseguire piu sessioni interattive se uso coppie di account differenti.
     public void interactive(String aSender_i, String aReceiver_i, PrintWriter to_i, Scanner from_i)throws InterruptedException{
-            Account S = extract(aSender_i);
-            Account R = extract(aReceiver_i);
-            checkBusy(S, R, to_i);
-            to_i.println("Start interattive transaction: \nCommands:");
+        Account S = extract(aSender_i);
+        Account R = extract(aReceiver_i);
+        checkBusy(S, R, to_i);
+        to_i.println("Start interattive transaction: \nCommands:");
+        to_i.println(" 1.:move <money>  2.:end");
+        
         while (true) {
             try{ 
-                to_i.println(" 1.:move <money>  2.:end");
                 String request_i = from_i.nextLine();
                 String[] parts_i = request_i.split(" ", 2);
                 String p = parts_i[0].toLowerCase().trim();
@@ -182,6 +190,7 @@ public class AccountManager {
             }  
         }
     }
+
     public synchronized void checkBusy(Account cSender,Account cReceiver, PrintWriter to_i) throws InterruptedException{
         while(busyAccount.get(cSender.getName()) != null || busyAccount.get(cReceiver.getName()) != null)
             {

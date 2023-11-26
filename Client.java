@@ -14,11 +14,9 @@ public class Client {
         try {
             Socket s = new Socket(host, port);
             System.out.println("Connected to server");
-
-            System.out.println("Usage:\t 1.Open <name> <money> \n\t 2.list \n\t" + 
+            System.out.println("Usage:\t 1.Open <name> <money> \n\t 2.list \n\t " + 
             "3.transfer <cash> <SenderAccount> <ReciverAccount>" +
             "\n\t 4.transfer_i <SenderAccount> <ReciverAccount> \n\t 5.quit" );
-
             /*
              * Delega la gestione di input/output a due thread separati, 
              * uno per inviare messaggi e uno per leggerli

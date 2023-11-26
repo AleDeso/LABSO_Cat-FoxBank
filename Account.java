@@ -1,13 +1,8 @@
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Locale;
-
 public class Account {
     
     private String name = null;
     private double money = 0;
     private Transaction lastT;
-    DateTimeFormatter f = DateTimeFormatter.ofPattern("EE-dd/MM/yyyy HH:mm:ss", Locale.ITALIAN);
     
     public Account(String name, double money){
         this.name = name;
@@ -18,7 +13,12 @@ public class Account {
     public Account(String name, double money,String t, double m){
         this.name = name;
         this.money = money;
-        lastT = new Transaction(name, LocalDateTime.parse(t,f), m);
+        lastT = new Transaction(name, t, m);
+    }
+    public Account(String name, double money,String t){
+        this.name = name;
+        this.money = money;
+        lastT = new Transaction(null, t, 0);
     }
 
     public String getName(){

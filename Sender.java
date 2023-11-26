@@ -18,6 +18,7 @@ public class Sender implements Runnable {
         try {
             PrintWriter to = new PrintWriter(this.s.getOutputStream(), true);
             while (true) {
+                
                 String requestClient = scan.nextLine(); // LEGGE TERMINALE CLIENT   ***************************************
              
                 

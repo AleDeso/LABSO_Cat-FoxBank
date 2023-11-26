@@ -14,6 +14,11 @@ public class Transaction {
         this.cashAccountKey = null;
         date =LocalDateTime.now();
     }
+    public Transaction(String cashAccountkey, String d, double cashMoved){
+        this.cashMoved = cashMoved;
+        this.cashAccountKey = cashAccountkey;
+        date = LocalDateTime.parse(d,f);
+    }
     public Transaction(String cashAccountkey, LocalDateTime d, double cashMoved){
         this.cashMoved = cashMoved;
         this.cashAccountKey = cashAccountkey;
