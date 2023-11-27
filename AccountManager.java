@@ -81,7 +81,7 @@ public class AccountManager {
             System.out.println("Wrong date format, check calendar");
             //se inserisci manualmente sul file DataBaseAccount.csv giorno della settimana e data davono concordare
         }catch (Exception e){
-            System.out.println(e);
+            System.err.println(e);
         } finally{
             scan.close();
         }
@@ -109,6 +109,8 @@ public class AccountManager {
 
         } catch (FileNotFoundException e) {
             System.out.println("File not found");
+        }catch (Exception e) {
+            System.err.println(e);
         }finally{
             writer.close();
         }

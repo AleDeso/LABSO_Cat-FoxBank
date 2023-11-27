@@ -119,6 +119,8 @@ public class ClientHandler implements Runnable {
             System.out.println("Client Close");
         } catch (IOException e) {
             System.err.println("ClientHandler: IOException caught: " + e);
+        }catch (Exception e) {
+            System.err.println(e);
         }
     }
     
