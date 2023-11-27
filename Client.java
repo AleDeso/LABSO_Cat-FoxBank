@@ -44,7 +44,6 @@ public class Client {
 
         } catch (IOException e) {
             System.err.println("Connection refused");
-            //e.printStackTrace();
         }
     }
 }

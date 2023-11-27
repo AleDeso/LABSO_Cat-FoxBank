@@ -29,7 +29,6 @@ public class Receiver implements Runnable {
             }
         }catch (IOException e) {
             System.err.println("IOException caught: " + e);
-            e.printStackTrace();
         } catch(NoSuchElementException e){
             System.out.println("Server not available");
         }finally {

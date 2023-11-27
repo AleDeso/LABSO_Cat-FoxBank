@@ -42,7 +42,6 @@ public class Sender implements Runnable {
             System.out.println("Sender closed.");
         } catch (IOException e) {
             System.err.println("IOException caught: " + e);
-            e.printStackTrace();
         } finally {
             scan.close();
         }
