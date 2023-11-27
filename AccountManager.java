@@ -22,7 +22,7 @@ public class AccountManager {
             this.serchAccount.put(key,bankAccount);
         }else{
             // Esiste già un account con la stessa chiave
-            throw new IllegalArgumentException("Account: " + key + " already exist."); // Decidere se passare direttamente il messaggio sul client con un to.print oppure fare cosi(con eccezione)
+            throw new IllegalArgumentException("Account: " + key + " already exist."); 
         }
         notifyAll();
     }
