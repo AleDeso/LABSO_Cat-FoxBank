@@ -1,6 +1,7 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+import java.time.format.DateTimeParseException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -76,6 +77,9 @@ public class AccountManager {
             System.out.println("DataBase loaded.");
         }catch (FileNotFoundException e) {
             System.out.println("File not found");
+        }catch (DateTimeParseException e) {
+            System.out.println("Wrong date format, check calendar");
+            //se inserisci manualmente sul file DataBaseAccount.csv giorno della settimana e data davono concordare
         }catch (Exception e){
             System.out.println(e);
         } finally{
@@ -87,21 +91,21 @@ public class AccountManager {
         PrintWriter writer = null;
         try {
             writer = new PrintWriter(new File("DataBaseAccount.csv"));
-        StringBuilder line = new StringBuilder();
-        for (Map.Entry<String, Account> entry : serchAccount.entrySet()) {
-            Account valueAccount = entry.getValue();
-            // Utilizza append() per aggiungere le informazioni dell'account al StringBuilder
-            line.append(valueAccount.getName());
-            line.append(";");
-            line.append(valueAccount.getMoney());
-            line.append(";");
-            line.append(valueAccount.getTransfer());
-            line.append("\n");
+            StringBuilder line = new StringBuilder();
+            for (Map.Entry<String, Account> entry : serchAccount.entrySet()) {
+                Account valueAccount = entry.getValue();
+                // Utilizza append() per aggiungere le informazioni dell'account al StringBuilder
+                line.append(valueAccount.getName());
+                line.append(";");
+                line.append(valueAccount.getMoney());
+                line.append(";");
+                line.append(valueAccount.getTransfer());
+                line.append("\n");
+                
+            }
             
-        }
-        
-        writer.print(line);
-        System.out.println("DataBaseAccount update.");
+            writer.print(line);
+            System.out.println("DataBaseAccount update.");
 
         } catch (FileNotFoundException e) {
             System.out.println("QUINDI????");
