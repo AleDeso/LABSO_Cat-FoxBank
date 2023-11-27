@@ -108,7 +108,7 @@ public class AccountManager {
             System.out.println("DataBaseAccount update.");
 
         } catch (FileNotFoundException e) {
-            System.out.println("QUINDI????");
+            System.out.println("File not found");
         }finally{
             writer.close();
         }
